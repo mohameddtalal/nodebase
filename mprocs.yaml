@@ -1,0 +1,12 @@
+procs:
+  next:
+    cmd: ["npm", "run", "dev"]
+    restart: true
+    env:
+      NODE_ENV: development
+
+  inngest:
+    cmd: ["npm", "run", "inngest:dev"]
+    restart: true
+    env:
+      NODE_ENV: development
