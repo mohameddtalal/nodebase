@@ -1,15 +1,11 @@
-//http://localhost:3000/login
-
 import { LoginForm } from "@/features/auth/components/login-form";
 import { requireUnauth } from "@/lib/auth-utils";
-
-const Page= async() =>{
-   await requireUnauth();
-return (
-<div>
-   <LoginForm/>
-</div>
-);
-
+import Link from "next/link";
+import Image from "next/image";
+//router lkn hatet features fe el component 
+const Page = async () => {
+  await requireUnauth();
+  return  <LoginForm />;
 };
+
 export default Page;
