@@ -18,6 +18,9 @@ const queryClient= useQueryClient();
 const testAi=useMutation(trpc.testAi.mutationOptions({
   onSuccess : () =>{
     toast.success("AI Job queued");
+  },
+  onError: () => {
+    toast.error("something went wrong");
   }
 }));
 
