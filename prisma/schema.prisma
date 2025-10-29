@@ -1,5 +1,7 @@
+// prisma/schema.prisma
+
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -10,12 +12,13 @@ datasource db {
 model User {
   id            String    @id @default(uuid())
   email         String    @unique
+  password      String?
   name          String?
   emailVerified Boolean   @default(false)
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  password      String?
+
   accounts      Account[]
   sessions      Session[]
 
@@ -31,8 +34,6 @@ model Account {
   refreshToken      String?
   idToken           String?
   expiresAt         DateTime?
-  scope             String?
-  password          String?
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([providerId, providerAccountId])
@@ -54,6 +55,14 @@ model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
+
   @@unique([identifier, token])
   @@map("verificationToken")
+}
+
+model Workflow{
+  id   String @id @default(cuid())
+  name String
+
+  @@map("workflow")
 }
