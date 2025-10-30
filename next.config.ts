@@ -2,7 +2,16 @@ import {withSentryConfig} from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  devIndicators:false,
+  async redirects(){
+    return[{
+      source :"/",
+      destination:"/workflows", //immediatly redirect to here http://localhost:3000/workflows
+      permanent:false,  //ashan law 3ndy page tany next.js myrohsh alhea lwhdo
+  }
+];
+
+  },
 };
 
 export default withSentryConfig(nextConfig, {
