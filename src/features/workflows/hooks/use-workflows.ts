@@ -4,17 +4,21 @@ import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-q
 import { error } from "console";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useWorkflowsParams } from "./use-workflows-params";
 //fetch all workflows in suspense means hydration boundary
+
+
 export const useSuspenseWorkflows =() =>{
     const trpc =useTRPC();
-    return useSuspenseQuery(trpc.workflows.getMany.queryOptions())
+    const [params] = useWorkflowsParams();
+    return useSuspenseQuery(trpc.workflows.getMany.queryOptions (params))
 };
 
 /**
  * hook to create a new workflow
  */
 
-
+//create workflow
 export const useCreateWorkflow =() => {
 
 const queryClient =useQueryClient();
@@ -25,7 +29,7 @@ return useMutation(trpc.workflows.create.mutationOptions({
         created`);
        
         queryClient.invalidateQueries(
-            trpc.workflows.getMany.queryOptions(),
+            trpc.workflows.getMany.queryOptions({}),
         );
    },
    onError :(error) => {
