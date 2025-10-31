@@ -1,13 +1,11 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "@/lib/db";
-
-// Ensure prisma is initialized
-console.log("Prisma instance:", prisma);
+import {checkout ,polar,portal } from "@polar-sh/better-auth";
+import { polarClient } from "./polar";
 
 export const auth = betterAuth({
-  secret: process.env.BETTER_AUTH_SECRET!,
-  baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+ 
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
@@ -15,4 +13,25 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true, // هينشئ Session تلقائي بعد signUp
   },
+  plugins:[
+    polar({
+     client: polarClient,
+    createCustomerOnSignUp:true,
+   use:[
+    checkout({
+    products:[
+      {
+        productId:"d4181b14-2613-49e8-9cab-9f70da631df6",
+        slug:"pro",
+      }
+    ],
+    successUrl: process.env.POLAR_SUCCESS_URL,
+    authenticatedUsersOnly:true,
+    }),
+    portal(),
+   ],
+
+})
+
+  ],
 });
