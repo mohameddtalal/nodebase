@@ -40,3 +40,29 @@ return useMutation(trpc.workflows.create.mutationOptions({
 
 );
 };
+
+/**
+ * hook to remove workflow
+ * 
+ */
+
+export const useRemoveWorkflow=()=>{
+const queryClient =useQueryClient();
+const trpc= useTRPC();
+return useMutation(
+    trpc.workflows.remove.mutationOptions({
+        onSuccess:(data)=>{
+           toast.success (`Workflow "${data.name}" removed`) ;
+           queryClient.invalidateQueries(trpc.workflows.getMany.queryOptions
+            ({
+
+            }));
+            queryClient.invalidateQueries(
+                trpc.workflows.getOne.queryFilter({id:data.id}),
+            );
+
+        }
+    })
+)
+
+}

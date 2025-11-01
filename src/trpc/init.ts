@@ -3,7 +3,7 @@ import { polarClient } from '@/lib/polar';
 import { initTRPC, TRPCError } from '@trpc/server';
 import { headers } from 'next/headers';
 import { cache } from 'react';
-
+import superjson from "superjson"
 
 
 export const createTRPCContext = cache(async () => {
@@ -22,8 +22,9 @@ type Context = Awaited<ReturnType<typeof createTRPCContext>>;
 // For instance, the use of a t variable
 // is common in i18n libraries.
 //intialize trpc
-const t = initTRPC.context<Context>().create();
-
+const t = initTRPC.create({
+transformer : superjson,
+});
 
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
