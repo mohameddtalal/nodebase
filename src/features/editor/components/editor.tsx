@@ -21,6 +21,8 @@ import '@xyflow/react/dist/style.css';
 import { nodeComponents } from '@/config/node-components';
 
 import { AddNodeButton } from './add-node-button';
+import { useAtom, useSetAtom } from 'jotai';
+import { editorAtom } from '../store/atoms';
 
 
 
@@ -38,6 +40,7 @@ return <ErrorView message="Error loading editor"/>;
 
 export const Editor =({workflowId}:{workflowId:string}) =>{
 const {data: workflow } = useSuspenseWorkflow(workflowId);
+const setEditor= useSetAtom(editorAtom);
 
 const [nodes, setNodes] = useState<Node[]>(workflow.nodes);
 const [edges, setEdges] = useState<Edge[]>(workflow.edges);
@@ -65,7 +68,13 @@ return ( //controls feha zoom out w zoom in w keda
     onEdgesChange={onEdgesChange}
     onConnect={onConnect}
     nodeTypes={nodeComponents}
+    onInit={setEditor}
         fitView
+        snapGrid={[10,10]}
+        snapToGrid
+        panOnScroll
+        panOnDrag={false}
+        selectionOnDrag       //to select more than one node
         proOptions={{    //to hide logo bta3hom taht
             hideAttribution :true,
         }}
